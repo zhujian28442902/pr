@@ -1,4 +1,4 @@
-#!/bin/bash - 
+#!/bin/bash
 #===============================================================================
 #
 #          FILE: touch-file.sh
@@ -19,8 +19,14 @@
 
 set -o nounset                              # Treat unset variables as an error
 
+url=$(git config --get remote.origin.url)
 
-filename=$(git config --get remote.origin.url |sed 's/.*.com\/\(.*\)\/.*/\1/').$(date '+%Y%m%d%H%M%S')
+if [[ "$url" = http* ]] ;
+then
+    filename=$(git config --get remote.origin.url |sed 's/.*.com\/\(.*\)\/.*/\1/').$(date '+%Y%m%d%H%M%S')
+else
+    filename=$(git config --get remote.origin.url|sed 's/.*com:\(.*\)\/.*/\1/').$(date '+%Y%m%d%H%M%S')
+fi
 
 echo creating file $filename
 
